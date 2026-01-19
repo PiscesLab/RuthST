@@ -1,0 +1,52 @@
+# ==========================================
+# Data Files (Crucial: 1GB+ files)
+# ==========================================
+# Ignore all raw and processed traffic data
+data/raw/*
+data/processed/*
+
+# If you want to keep the folder structure but not the files:
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Ignore specific large file extensions
+*.csv
+*.h5
+*.npy
+*.npz
+*.graphml
+*.xml
+
+# ==========================================
+# Python & Environment
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# ==========================================
+# Parsl & Logs
+# ==========================================
+# Parsl creates a 'runinfo' directory for every execution
+runinfo/
+*.log
+
+# ==========================================
+# Jupyter Notebooks
+# ==========================================
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# ==========================================
+# Operating System
+# ==========================================
+.DS_Store
+Thumbs.db
