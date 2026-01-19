@@ -9,14 +9,11 @@ This project bridges the gap between RUTH simulation and LargeST benchmark using
 * **Peak Period Splitting**: Automatically extracts and segments data into **Morning Peak (05:00-08:00)** and **Evening Peak (14:00-17:00)** datasets.
 * **Spatial Alignment**: Filters the 29k+ road segments to focus on core infrastructure (`motorway`, `trunk`, `primary`, `secondary`) based on metadata.
 
-
-
 ---
 
 ## 📂 Project Structure
 
 ```text
-.
 ├── data/
 │   ├── raw/               # Raw RUTH H5 files (Git ignored)
 │   └── processed/         # Processed Speed/Flow H5 files (Git ignored)
@@ -29,6 +26,7 @@ This project bridges the gap between RUTH simulation and LargeST benchmark using
 ├── main.py                # Pipeline entry point
 ├── .gitignore             # Optimized rules for large datasets and logs
 └── README.md
+```
 
 ## 🚀 Quick Start
 
@@ -36,7 +34,7 @@ This project bridges the gap between RUTH simulation and LargeST benchmark using
 Install the required dependencies:
 ```bash
 pip install pandas numpy tables parsl matplotlib seaborn
-
+```
 ### 2. Data Setup
 1. **Raw Data**: Place your RUTH-generated HDF5 files in the `data/raw/` directory. 
 2. **Metadata**: Ensure you have a road network metadata file (e.g., `df_meta`) that contains the mapping between OSM nodes and road categories (`highway` types).
@@ -46,6 +44,7 @@ pip install pandas numpy tables parsl matplotlib seaborn
 To start the transformation, execute the main entry point:
 ```bash
 python main.py
+```
 
 The pipeline will:
 
@@ -55,10 +54,6 @@ The pipeline will:
 4. Filter by road type and split by peak hours.
 5. Save results to data/processed/.
 
-### Part 5: Data Processing Logic
-This section details the specific transformations applied to the traffic metrics.
-
-```markdown
 ## 📊 Data Processing Logic
 
 ### Metric Conversion
@@ -66,16 +61,13 @@ This section details the specific transformations applied to the traffic metrics
 * **Flow (Unique Count)**: Traffic flow is defined as the number of unique vehicle IDs (`nunique`) observed on a specific road segment within the time interval.
 * **Temporal Filling**: For segments with no vehicle pings during a specific interval, the value is filled with `0` to ensure a dense, continuous spatio-temporal matrix.
 
-
-
 ### Spatial & Road-Level Filtering
 To align with the **LargeST** benchmark, the pipeline filters the original 29k+ road segments. It retains only major road categories defined in the metadata:
 * `motorway`
 * `trunk`
 * `primary`
 * `secondary`
-
----
+  
 ## ⚡ Performance Optimization
 
 ### Vectorized ID Mapping
