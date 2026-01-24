@@ -1,1 +1,16 @@
-# wait to finish soon
+# 核心深度学习框架 on CPU node
+torch==2.5.1
+torchvision
+torchaudio
+
+# 数据处理
+numpy==1.26.4
+pandas==1.5.3
+tables==3.10.1
+scipy==1.15.3
+scikit-learn
+
+# 辅助工具
+PyYAML==6.0.3
+tqdm==4.67.1
+h5py==3.15.1

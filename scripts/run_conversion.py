@@ -3,8 +3,8 @@ import os
 import sys
 # 确保能找到 src 模块
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.graph_logic import generate_graph_metadata, generate_adjacency_matrix
-from src.aggregator import run_h5_conversion
+from dataprep.graph_logic import generate_graph_metadata, generate_adjacency_matrix
+from dataprep.aggregator import run_h5_conversion
 
 def main():
     # 1. 运行第一阶段 (获取映射表)

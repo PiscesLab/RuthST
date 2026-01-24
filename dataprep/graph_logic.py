@@ -3,7 +3,7 @@ import networkx as nx
 import pandas as pd
 import numpy as np
 import os
-from src.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, GRAPHML_NAME
+from dataprep.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, GRAPHML_NAME
 
 def generate_graph_metadata():
     """

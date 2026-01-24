@@ -50,3 +50,10 @@ runinfo/
 # ==========================================
 .DS_Store
 Thumbs.db
+
+# ==========================================
+# LargeST Specifics
+# ==========================================
+# Ignore saved models and per-run logs
+experiments/**/RUTH/*.pt
+experiments/**/RUTH/*.log

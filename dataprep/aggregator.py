@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 import parsl
 import os
-from src.parsl_config import parsl_config
-from src.parsl_worker import process_h5_chunk
-from src.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, TIME_INTERVAL
+from dataprep.parsl_config import parsl_config
+from dataprep.parsl_worker import process_h5_chunk
+from dataprep.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, TIME_INTERVAL
 
 def run_h5_conversion(portion_name, edge_to_idx, df_meta):
     """
