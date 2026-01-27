@@ -17,12 +17,15 @@ This project bridges the gap between RUTH simulation and LargeST benchmark using
 ├── data/
 │   ├── raw/               # Raw RUTH H5 files (Git ignored)
 │   └── processed/         # Processed Speed/Flow H5 files (Git ignored)
-├── src/
+|   └── ruth/              # Processed dataset ready for model training, ruth_adj_matrix placed under /ruth (Git ignored)
+├── dataprep/
 │   ├── config.py          # Global constants (intervals, paths, peak hours)
 │   ├── parsl_config.py    # Parsl execution environment setup
 │   ├── parsl_worker.py    # Parallel app logic (Vectorized Mapping & Aggregation)
 │   └── aggregator.py      # Task distribution, merging, and spatial filtering
 ├── notebooks/             # Visualization and analysis (Heatmaps, Time-series)
+├── experiments/           # Adapted from LargeST benchmark
+├── src/                   # ML essentials
 ├── main.py                # Pipeline entry point
 ├── .gitignore             # Optimized rules for large datasets and logs
 └── README.md
@@ -35,6 +38,7 @@ Install the required dependencies:
 ```bash
 pip install pandas numpy tables parsl matplotlib seaborn
 ```
+More details go to requirements.txt
 ### 2. Data Setup
 1. **Raw Data**: Place your RUTH-generated HDF5 files in the `data/raw/` directory. 
 2. **Metadata**: Ensure you have a road network metadata file (e.g., `df_meta`) that contains the mapping between OSM nodes and road categories (`highway` types).
