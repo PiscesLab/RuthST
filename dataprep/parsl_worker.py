@@ -4,7 +4,7 @@ import numpy as np
 from parsl.app.app import python_app
 
 @python_app
-def process_h5_chunk(file_path, start_row, row_count, edge_to_idx, time_interval='15min'):
+def process_h5_chunk(file_path, start_row, row_count, edge_to_idx, time_interval='1min'):
     """
     Parsl App: 读取 H5 的特定范围并聚合
     """

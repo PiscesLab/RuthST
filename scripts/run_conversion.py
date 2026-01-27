@@ -13,7 +13,7 @@ def main():
     
     # 2. 运行第二阶段 (处理指定的 Portion)
     # 你可以手动指定，或者写个循环处理所有比例
-    portion = "50pc" 
+    portion = "100pc" 
     run_h5_conversion(portion, edge_to_idx, df_meta)
 
 if __name__ == "__main__":

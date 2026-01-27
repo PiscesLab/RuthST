@@ -1,18 +1,20 @@
 # scripts/check_h5_format.py
 import pandas as pd
+import sys
 import h5py
 import os
-from src.config import RAW_DATA_DIR
+from dataprep.config import RAW_DATA_DIR
 
-def check_h5():
+def check_h5(filename):
     # 1. 查找文件
-    h5_files = [f for f in os.listdir(RAW_DATA_DIR) if f.endswith('.h5')]
+    #h5_files = [f for f in os.listdir(RAW_DATA_DIR) if f.endswith('.h5')]
+    h5_file_path = RAW_DATA_DIR / filename
     
-    if not h5_files:
-        print(f"❌ 错误：在 {RAW_DATA_DIR} 没找到 H5 文件。当前目录下有：{os.listdir(RAW_DATA_DIR)}")
+    if not os.path.exists(h5_file_path):
+        print(f"❌ 错误：在 {RAW_DATA_DIR} 没找到 {h5_file_path} 文件。当前目录下有：{os.listdir(RAW_DATA_DIR)}")
         return
 
-    target_path = RAW_DATA_DIR / h5_files[0]
+    target_path = h5_file_path
     print(f"🔍 正在探测 H5: {target_path}")
 
     # 2. 探测 H5 内部结构
@@ -52,8 +54,23 @@ def check_h5():
             print(f"📝 原始数据总行数 (Total Records): {total_records:,}")
             print(f"📈 平均每辆车产生记录数: {total_records / total_vehicles:.2f}")
 
+            # 只读取第一行和最后一行的 timestamp
+            start_ts = pd.read_hdf(target_path, key='fcd', columns=['timestamp'], stop=1)['timestamp'].iloc[0]
+            end_ts = pd.read_hdf(target_path, key='fcd', columns=['timestamp'], start=total_records - 1)['timestamp'].iloc[0]
+
+            # 转换为人类可读格式 (注意：unit='s' 代表秒)
+            start_dt = pd.to_datetime(start_ts, unit='s')
+            end_dt = pd.to_datetime(end_ts, unit='s')
+
+            print(f"  Start: {start_dt} ({start_dt.day_name()})")
+            print(f"  End:   {end_dt}")
+            print(f"  ---")
         except Exception as e:
             print(f"⚠️ 无法统计 Vehicle ID: {e}")
 
 if __name__ == "__main__":
-    check_h5()
+    if len(sys.argv) < 2:
+        print("用法: python scripts/check_h5_format.py <文件名>")
+        print("例如: python scripts/check_h5_format.py Ostrava_fcd_history-50pc.h5")
+    else:
+        check_h5(sys.argv[1])

@@ -1,7 +1,7 @@
 import pandas as pd
 import sys
 import os
-from src.config import PROCESSED_DATA_DIR
+from dataprep.config import PROCESSED_DATA_DIR
 
 def check_processed_h5(filename):
     # 自动补全路径

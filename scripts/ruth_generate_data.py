@@ -2,6 +2,7 @@ import os
 import argparse
 import numpy as np
 import pandas as pd
+from dataprep.config import PROCESSED_DATA_DIR
 
 class StandardScaler():
     def __init__(self, mean, std, eps=1e-8):
@@ -16,7 +17,7 @@ class StandardScaler():
     def inverse_transform(self, data):
         return (data * (self.std + self.eps)) + self.mean
 
-def generate_data_and_idx(df, x_offsets, y_offsets, add_time_of_day, add_day_of_week):
+def generate_data_and_idx(df, x_offsets, y_offsets, add_time_of_day, add_alter_percent):
     num_samples, num_nodes = df.shape
     data = np.expand_dims(df.values, axis=-1)
     
@@ -26,11 +27,10 @@ def generate_data_and_idx(df, x_offsets, y_offsets, add_time_of_day, add_day_of_
         time_ind = (df.index.values - df.index.values.astype('datetime64[D]')) / np.timedelta64(1, 'D')
         time_of_day = np.tile(time_ind, [1, num_nodes, 1]).transpose((2, 1, 0))
         feature_list.append(time_of_day)
-    if add_day_of_week:
-        dow = df.index.dayofweek
-        dow_tiled = np.tile(dow, [1, num_nodes, 1]).transpose((2, 1, 0))
-        day_of_week = dow_tiled / 7
-        feature_list.append(day_of_week)
+    if add_alter_percent:
+        pc_val = args.alter_percent / 100.0
+        pc_feature = np.full((num_samples, num_nodes, 1), pc_val, dtype=np.float32)
+        feature_list.append(pc_feature)
 
     data = np.concatenate(feature_list, axis=-1)
     
@@ -41,8 +41,12 @@ def generate_data_and_idx(df, x_offsets, y_offsets, add_time_of_day, add_day_of_
 
 def generate_train_val_test(args):
     # 修改 1：直接读取指定的 H5 文件
+    file_path = PROCESSED_DATA_DIR / f"{args.alter_percent}pc" / f"{args.input_h5}"
+    if not os.path.exists(file_path):
+        print(f"找不到 {file_path}")
+        return
     print(f"📖 正在加载 RUTH 数据: {args.input_h5}")
-    df = pd.read_hdf(args.input_h5)
+    df = pd.read_hdf(file_path)
     print('Original data shape:', df.shape)
 
     seq_length_x, seq_length_y = args.seq_length_x, args.seq_length_y
@@ -65,24 +69,28 @@ def generate_train_val_test(args):
     scaler = StandardScaler(mean=x_train_raw.mean(), std=x_train_raw.std())
     data[..., 0] = scaler.transform(data[..., 0])
 
-    out_dir = os.path.join(args.out_dir, args.dataset_name)
+    out_dataset_name = args.dataset_name + '/' + args.period + '_' + args.metrics
+    out_dir = os.path.join(args.out_dir, out_dataset_name)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
         
     # 保存结果
-    np.savez_compressed(os.path.join(out_dir, 'his.npz'), data=data, mean=scaler.mean, std=scaler.std)
-    np.save(os.path.join(out_dir, 'idx_train.npy'), idx_train)
-    np.save(os.path.join(out_dir, 'idx_val.npy'), idx_val)
-    np.save(os.path.join(out_dir, 'idx_test.npy'), idx_test)
+    np.savez_compressed(os.path.join(out_dir, f"his_{args.alter_percent}pc.npz"), data=data, mean=scaler.mean, std=scaler.std)
+    np.save(os.path.join(out_dir, f"idx_train_{args.alter_percent}pc.npy"), idx_train)
+    np.save(os.path.join(out_dir, f"idx_val_{args.alter_percent}pc.npy"), idx_val)
+    np.save(os.path.join(out_dir, f"idx_test_{args.alter_percent}pc.npy"), idx_test)
     print(f"✅ 处理完成！数据已存至: {out_dir}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--input_h5', type=str, required=True)
-    parser.add_argument('--out_dir', type=str, default='data/processed')
-    parser.add_argument('--dataset_name', type=str, default='ruth_evening')
+    parser.add_argument('--out_dir', type=str, default='data')
+    parser.add_argument('--dataset_name', type=str, default='ruth')
+    parser.add_argument('--period', type=str, default='morning')
+    parser.add_argument('--metrics', type=str, default='speed')
     parser.add_argument('--seq_length_x', type=int, default=12)
     parser.add_argument('--seq_length_y', type=int, default=12)
+    parser.add_argument('--alter_percent', type=int, default=0)
     parser.add_argument('--tod', type=int, default=1)
     parser.add_argument('--dow', type=int, default=1)
     

@@ -56,4 +56,4 @@ Thumbs.db
 # ==========================================
 # Ignore saved models and per-run logs
 experiments/**/RUTH/*.pt
-experiments/**/RUTH/*.log
+#experiments/**/RUTH/*.log

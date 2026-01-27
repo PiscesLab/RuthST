@@ -70,7 +70,7 @@ def main():
     loss_fn = masked_mae
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lrate, weight_decay=args.wdecay)
     steps = [10, 50, 90]  # CA: [5, 50, 90], others: [10, 50, 90]
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=steps, gamma=0.1, verbose=True)
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=steps, gamma=0.1)
 
     engine = DCRNN_Engine(device=device,
                           model=model,

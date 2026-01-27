@@ -5,7 +5,7 @@ import parsl
 import os
 from dataprep.parsl_config import parsl_config
 from dataprep.parsl_worker import process_h5_chunk
-from dataprep.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, TIME_INTERVAL
+from dataprep.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, SIMULATION_METADATA, TIME_INTERVAL
 
 def run_h5_conversion(portion_name, edge_to_idx, df_meta):
     """
@@ -15,7 +15,8 @@ def run_h5_conversion(portion_name, edge_to_idx, df_meta):
     parsl.load(parsl_config)
     
     input_file = RAW_DATA_DIR / f"Ostrava_fcd_history-{portion_name}.h5"
-    total_rows = 22154288  # 刚才探测到的总数
+    #total_rows = 26183823  # 刚才探测到的总数
+    total_rows = SIMULATION_METADATA.get(portion_name)["total_rows"]
     chunk_size = 1000000   # 每份 100 万行
     
     print(f"🚀 开始转换 {portion_name}, 总行数: {total_rows}")
@@ -43,13 +44,14 @@ def run_h5_conversion(portion_name, edge_to_idx, df_meta):
     # --- 2. 准备空间过滤索引 ---
     main_roads = ['motorway', 'trunk', 'primary', 'secondary']
     target_indices = df_meta[df_meta['highway'].isin(main_roads)].index
+    #target_indices = df_meta.index
 
     # --- 3. 拆分 Speed 和 Flow 并分别处理 ---
 
     # A. 处理速度 (Speed)
     # 从 MultiIndex 中提取 speed_mps 分支
     speed_df = combined_df['speed_mps'].reindex(columns=target_indices).fillna(0)
-    speed_df = speed_df * 2.23694  # mps -> mph
+    speed_df = speed_df * 2.23694  # mps(m/s) -> mph
 
     # B. 处理流量 (Flow)
     # 提取车辆数分支 (假设 worker 里叫 veh_id)
@@ -58,7 +60,7 @@ def run_h5_conversion(portion_name, edge_to_idx, df_meta):
 
     # --- 4. 方案 B：双峰切割并保存 ---
     periods = {
-        "morning": ("2025-04-04 05:00:00", "2025-04-04 08:00:00"),
+        "morning": ("2025-04-04 05:00:00", "2025-04-04 10:00:00"),
         "evening": ("2025-04-04 14:00:00", "2025-04-04 17:00:00")
     }
 
