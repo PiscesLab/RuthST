@@ -46,3 +46,4 @@ check mask value tensor(0., device='cuda:0')
 2026-01-27 21:46:45,284 - Epoch: 025, Train Loss: 1.6038, Train RMSE: 3.4412, Train MAPE: 3.7929, Valid Loss: 2.4003, Valid RMSE: 4.2543, Valid MAPE: 19.4043, Train Time: 423.1167s/epoch, Valid Time: 73.2518s, LR: 1.0000e-03
 2026-01-27 21:55:01,394 - Epoch: 026, Train Loss: 1.5987, Train RMSE: 3.4371, Train MAPE: 3.8961, Valid Loss: 1.9988, Valid RMSE: 4.0542, Valid MAPE: 23.1536, Train Time: 422.8771s/epoch, Valid Time: 73.2322s, LR: 1.0000e-03
 2026-01-27 22:03:17,653 - Epoch: 027, Train Loss: 1.5948, Train RMSE: 3.4344, Train MAPE: 3.7361, Valid Loss: 2.3382, Valid RMSE: 4.2054, Valid MAPE: 21.0079, Train Time: 423.0341s/epoch, Valid Time: 73.2251s, LR: 1.0000e-03
+2026-01-27 22:11:34,231 - Epoch: 028, Train Loss: 1.5904, Train RMSE: 3.4231, Train MAPE: 3.9037, Valid Loss: 2.3410, Valid RMSE: 4.2400, Valid MAPE: 18.9332, Train Time: 423.3429s/epoch, Valid Time: 73.2352s, LR: 1.0000e-03
