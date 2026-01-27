@@ -37,7 +37,7 @@ dist/
 # ==========================================
 # Parsl creates a 'runinfo' directory for every execution
 runinfo/
-*.log
+#*.log
 
 # ==========================================
 # Jupyter Notebooks
@@ -55,5 +55,5 @@ Thumbs.db
 # LargeST Specifics
 # ==========================================
 # Ignore saved models and per-run logs
-experiments/**/RUTH/*.pt
+#experiments/**/RUTH/*.pt
 #experiments/**/RUTH/*.log
