@@ -1,7 +1,7 @@
 import pandas as pd
 import sys
 import os
-from src.config import RAW_DATA_DIR
+from dataprep.config import RAW_DATA_DIR
 
 def get_trajectory(vehicle_id, filename="Ostrava_fcd_history-50pc.h5"):
     file_path = RAW_DATA_DIR / filename
@@ -17,6 +17,8 @@ def get_trajectory(vehicle_id, filename="Ostrava_fcd_history-50pc.h5"):
         # 如果 H5 不是 Table 格式，则需要全量读取后过滤
         df = pd.read_hdf(file_path, key='fcd')
         
+        total_vehicles = df['vehicle_id'].nunique()
+        print(f"数据中共有 {total_vehicles} 辆车")
         # 过滤目标车辆
         traj = df[df['vehicle_id'] == int(vehicle_id)].copy()
         
