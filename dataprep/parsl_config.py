@@ -6,6 +6,7 @@ import multiprocessing
 
 # 自动获取核心数，预留 2 个给系统
 n_cores = max(1, multiprocessing.cpu_count() - 2)
+#print(f"[Parsl] max_workers_per_node={n_cores}")
 
 parsl_config = Config(
     executors=[

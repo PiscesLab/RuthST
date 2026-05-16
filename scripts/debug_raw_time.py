@@ -3,7 +3,8 @@ import h5py
 import os
 from src.config import RAW_DATA_DIR
 
-def debug_raw_timeline(filename="Ostrava_fcd_history-50pc.h5"):
+#def debug_raw_timeline(filename="Ostrava_fcd_history-50pc.h5"):
+def debug_raw_timeline(filename="cbr_fcd_history-7pc.h5"):
     file_path = RAW_DATA_DIR / filename
     if not os.path.exists(file_path):
         print(f"❌ 找不到文件: {file_path}")

@@ -5,11 +5,12 @@ import numpy as np
 import os
 from dataprep.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, EXPERIMENT_DATA_DIR, GRAPHML_NAME
 
-def generate_graph_metadata():
+def generate_graph_metadata(city="ostrava"):
     """
     解析 GraphML，生成 meta.csv 和索引映射表
     """
-    graph_path = RAW_DATA_DIR / GRAPHML_NAME
+    #graph_path = RAW_DATA_DIR / GRAPHML_NAME
+    graph_path = RAW_DATA_DIR / f"{city}_routing_map.graphml"
     print(f"正在加载路网文件: {graph_path}")
     
     # 1. 使用 networkx 加载路网
@@ -93,7 +94,7 @@ def generate_graph_metadata():
     
     return G, edge_to_idx, df_meta
 
-def generate_adjacency_matrix(G, edge_to_idx, df_meta, main_roads=['motorway', 'trunk', 'primary', 'secondary']):
+def generate_adjacency_matrix(G, edge_to_idx, df_meta, city="ostrava", main_roads=['motorway', 'trunk', 'primary', 'secondary']):
     """
     根据路网拓扑构建邻接矩阵 ruth_adj_matrix.npy
     """

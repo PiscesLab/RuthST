@@ -4,6 +4,10 @@
 # Ignore all raw and processed traffic data
 data/raw/*
 data/processed/*
+logs/
+results/
+figures/
+*.raw.gz
 
 # If you want to keep the folder structure but not the files:
 !data/raw/.gitkeep

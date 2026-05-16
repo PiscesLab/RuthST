@@ -20,6 +20,7 @@ SIMULATION_METADATA = {
     "80pc":  {"total_rows": 23826772},
     "90pc": {"total_rows": 24785033},
     "100pc": {"total_rows": 26400677},
+    "7pc": {"total_rows": 21044719},
 }
 
 # 文件名
